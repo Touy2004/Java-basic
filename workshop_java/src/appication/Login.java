@@ -8,13 +8,20 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import java.sql.*;
 
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import mysqlConnect.MysqlConnect;
+import passwordHashing.PasswordHashing;
 
 
 public class Login extends javax.swing.JFrame {
+    
+    Connection conn = null; //ເກັບການເຊື່ອມຕໍ່ຖານຂໍ້ມູນ
+    PreparedStatement pst = null; //ກຽມຊຸດຄໍາສັ່ງ
+    ResultSet rs = null; //ເກັບຜົນໄດ້ຮັບ
 
     public Login() {
         initComponents();
@@ -151,10 +158,29 @@ public class Login extends javax.swing.JFrame {
             return;
         }
         
-        //ໄປຫນ້າ Main
-        Main m = new Main();
-        m.setVisible(true);
-        dispose();
+        try {
+            conn = MysqlConnect.connectDB();
+            String sql = "SELECT emp_id, CONCAT(emp_name, ' ', emp_lname) AS name, status FROM employee WHERE username=? AND password=?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtUser.getText().trim());
+            pst.setString(2, PasswordHashing.doHashing(txtPass.getText().trim()));
+            
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                Main m = new Main();
+                m.setVisible(true);
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(rootPane,  "ບັນຊີເຂົ້າໃຊ້ ແລະ ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ",
+                        "ຜິດພາດ",JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+//        //ໄປຫນ້າ Main
+//        Main m = new Main();
+//        m.setVisible(true);
+//        dispose();
         
     }//GEN-LAST:event_btnLoginActionPerformed
 

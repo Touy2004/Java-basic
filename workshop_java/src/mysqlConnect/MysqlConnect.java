@@ -14,7 +14,7 @@ public class MysqlConnect {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(host, username, password);
-            JOptionPane.showMessageDialog(null, "Connected");
+//            JOptionPane.showMessageDialog(null, "Connected");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
