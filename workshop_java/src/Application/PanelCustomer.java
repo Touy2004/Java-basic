@@ -69,8 +69,10 @@ public class PanelCustomer extends javax.swing.JPanel {
         //ເຊື່ອມ database
         conn = MysqlConnect.connectDB();
         updateTable();
+        autoId();
     }
     
+    //ສ້າງເມັດທອດສະເເດງຂໍ້ມູນຕາຕະລາງ
     private void updateTable(){
         try {
             String sql = "SELECT *FROM customer ORDER BY cus_id DESC";
@@ -94,6 +96,25 @@ public class PanelCustomer extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, e);
         }
     
+    }
+    
+    //ສ້າງເມັດທອດສະເເດງລະຫັດລູກຄ້າເເບບ auto
+    private void autoId(){
+        try {
+            String sql = "SELECT MAX(cus_id) AS max_id FROM customer";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            rs.next();
+            if (rs.getString("max_id") == null) {
+                txtId.setText("CUS0000001");
+            } else {
+                int id = Integer.parseInt(rs.getString("max_id").substring(3, rs.getString("max_id").length()));
+                id++;
+                txtId.setText("CUS" + String.format("%07d", id));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
     
     @SuppressWarnings("unchecked")
