@@ -165,6 +165,7 @@ public class PanelCustomer extends javax.swing.JPanel {
         jLabel5.setText("ນາມສະກຸນ");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
+        txtId.setEditable(false);
         txtId.setFont(new java.awt.Font("Phetsarath OT Bold Italic", 0, 13)); // NOI18N
         jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 260, -1));
 
