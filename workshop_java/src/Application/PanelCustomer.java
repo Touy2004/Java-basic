@@ -314,6 +314,11 @@ public class PanelCustomer extends javax.swing.JPanel {
                 txtSearchActionPerformed(evt);
             }
         });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -470,6 +475,31 @@ public class PanelCustomer extends javax.swing.JPanel {
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        try {
+            String sql = "SELECT *FROM customer WHERE CONCAT(cus_id, cus_name, cus_lname) LIKE '%"+ txtSearch.getText() +"%' ORDER BY cus_id DESC";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            DefaultTableModel d = (DefaultTableModel) jTable1.getModel();
+            jTable1.setRowHeight(30); //ຂະໜາດຄວາມສູງຂອງແຖວ
+            d.setRowCount(0); //ລືບແຖວຂອງຕາຕະລາງອອກກ່ອນ
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("cus_id"));
+                v.add(rs.getString("cus_name"));
+                v.add(rs.getString("cus_lname"));
+                v.add(rs.getString("gender"));
+                v.add(rs.getString("address"));
+                v.add(rs.getString("tel"));
+                d.addRow(v);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
