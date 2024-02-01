@@ -43,7 +43,9 @@ public class PanelCustomer extends javax.swing.JPanel {
         
         //ກຳນົດໃຫ້ປຸ່ມຊາຍ ແລະ ຍິງ
         txtMale.setActionCommand("ຊາຍ");
-        txtMale.setActionCommand("ຍິງ");
+        txtFemale.setActionCommand("ຍິງ");
+        
+        
         //ປ່ຽນຟອນ ແລະ ສີພື້ນຫົວຕາຕະລາງ      
         JTableHeader header = jTable1.getTableHeader();
         header.setFont(new Font("Phetsarath OT", Font.BOLD, 16));
@@ -150,7 +152,6 @@ public class PanelCustomer extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         txtFirstname = new javax.swing.JTextField();
         txtLastname = new javax.swing.JTextField();
@@ -165,7 +166,6 @@ public class PanelCustomer extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -185,10 +185,6 @@ public class PanelCustomer extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
         jLabel4.setText("ຊື່ລູກຄ້າ");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
-        jLabel5.setText("ວັນ ເດືອນ ປີເກີດ");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
 
         txtId.setEditable(false);
         txtId.setFont(new java.awt.Font("Phetsarath OT Bold Italic", 0, 13)); // NOI18N
@@ -272,7 +268,6 @@ public class PanelCustomer extends javax.swing.JPanel {
             }
         });
         jPanel2.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 200, -1, -1));
-        jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 260, 30));
 
         jLabel8.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
         jLabel8.setText("ນາມສະກຸນ");
@@ -306,6 +301,11 @@ public class PanelCustomer extends javax.swing.JPanel {
                 "ລະຫັດ ", "ຊື່ລູກຄ້າ", "ນາມສະກຸນ", "ເພດ", "ທີ່ຢູ່", "ເບີໂທ"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         txtSearch.setFont(new java.awt.Font("Phetsarath OT Bold Italic", 0, 13)); // NOI18N
@@ -362,11 +362,61 @@ public class PanelCustomer extends javax.swing.JPanel {
             return;
         }else if (!Validation.telephoneValidation(txtTelephone.getText())){
             JOptionPane.showMessageDialog(null, "ກະລຸນນາປ້ອນເບີໂທລະສັບໃຫ້ຖືກຕ້ອງດ້ວຍ", "ຫວ່າງເປົ່າ", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        
+        try {
+            String sql = "INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?)";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtId.getText());
+            pst.setString(2, txtFirstname.getText());
+            pst.setString(3, txtLastname.getText());
+            pst.setString(4, gender.getSelection().getActionCommand());
+            pst.setString(5, txtAddress.getText());
+            pst.setString(6, txtTelephone.getText());
+            
+            pst.executeUpdate();
+            
+             FlatSVGIcon icon = new FlatSVGIcon("image_svg/done.svg");
+            JOptionPane.showMessageDialog(null, "ຂໍ້ມູນຖືກບັນທຶກລົງໃນຖານຂໍ້ມູນສໍາເລັດແລ້ວ", "ສໍາເລັດ", JOptionPane.WIDTH, icon);
+            clearForm();
+            updateTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
     }//GEN-LAST:event_btnAddActionPerformed
-
+    
+    //Update method
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
+        if(checkInputs()){
+            JOptionPane.showMessageDialog(null, "ກະລຸນນາປ້ອນໃຫ້ຄົບຖ້ວນດ້ວຍ", "ຫວ່າງເປົ່າ", JOptionPane.WARNING_MESSAGE);
+            return;
+        }else if (!Validation.telephoneValidation(txtTelephone.getText())){
+            JOptionPane.showMessageDialog(null, "ກະລຸນນາປ້ອນເບີໂທລະສັບໃຫ້ຖືກຕ້ອງດ້ວຍ", "ຫວ່າງເປົ່າ", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            String sql = "UPDATE customer SET cus_name=?, cus_lname=?, gender=?, address=?, tel=? WHERE cus_id=? ";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtFirstname.getText());
+            pst.setString(2, txtLastname.getText());
+            pst.setString(3, gender.getSelection().getActionCommand());
+            pst.setString(4, txtAddress.getText());
+            pst.setString(5, txtTelephone.getText());
+            pst.setString(6, txtId.getText());
+            
+            pst.executeUpdate();
+            
+             FlatSVGIcon icon = new FlatSVGIcon("image_svg/done.svg");
+            JOptionPane.showMessageDialog(null, "ປັບປຸງໃນຖານຂໍ້ມູນສໍາເລັດແລ້ວ", "ສໍາເລັດ", JOptionPane.WIDTH, icon);
+            clearForm();
+            updateTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -377,6 +427,33 @@ public class PanelCustomer extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel d = (DefaultTableModel) jTable1.getModel();
+        int selectIndex = jTable1.getSelectedRow(); //ເກັບແຖວທີ່ເລືອກໄວ້ໃນຕົວປ່ຽນ selectIndex
+        if (selectIndex == -1) {
+            return;
+        }
+        txtId.setText(d.getValueAt(selectIndex, 0).toString());
+        txtFirstname.setText(d.getValueAt(selectIndex, 1).toString());
+        txtLastname.setText(d.getValueAt(selectIndex, 2).toString());
+
+        String gender = d.getValueAt(selectIndex, 3).toString();
+        if (gender.equals("ຊາຍ")) {
+            txtMale.setSelected(true);
+        } else {
+            txtFemale.setSelected(true);
+        }
+
+        txtAddress.setText(d.getValueAt(selectIndex, 4).toString());
+        txtTelephone.setText(d.getValueAt(selectIndex, 5).toString());
+
+        //ໃຫ້ປຸ່ມເພີ້ມໃຊ້ງານບໍ່ໄດ້ ແລະ ປຸ່ມແກ້ໄຂ, ລືບ ໃຊ້ງານໄດ້
+        btnAdd.setEnabled(false);
+        btnEdit.setEnabled(true);
+        btnDelete.setEnabled(true);
+    }//GEN-LAST:event_jTable1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -384,11 +461,9 @@ public class PanelCustomer extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.ButtonGroup gender;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
