@@ -142,6 +142,8 @@ public class PanelCustomer extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
@@ -162,18 +164,18 @@ public class PanelCustomer extends javax.swing.JPanel {
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
-        jLabel5.setText("ນາມສະກຸນ");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+        jLabel5.setText("ວັນ ເດືອນ ປີເກີດ");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
 
         txtId.setEditable(false);
         txtId.setFont(new java.awt.Font("Phetsarath OT Bold Italic", 0, 13)); // NOI18N
-        jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 260, -1));
+        jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 260, -1));
 
         txtFirstname.setFont(new java.awt.Font("Phetsarath OT Bold Italic", 0, 13)); // NOI18N
-        jPanel2.add(txtFirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 260, -1));
+        jPanel2.add(txtFirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 260, -1));
 
         txtLastname.setFont(new java.awt.Font("Phetsarath OT Bold Italic", 0, 13)); // NOI18N
-        jPanel2.add(txtLastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 200, -1));
+        jPanel2.add(txtLastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 200, -1));
 
         jLabel6.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
         jLabel6.setText("ລະຫັດລູກຄ້າ");
@@ -200,7 +202,7 @@ public class PanelCustomer extends javax.swing.JPanel {
                 txtFemaleActionPerformed(evt);
             }
         });
-        jPanel2.add(txtFemale, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, -1, -1));
+        jPanel2.add(txtFemale, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, -1, -1));
 
         gender.add(txtMale);
         txtMale.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
@@ -210,7 +212,7 @@ public class PanelCustomer extends javax.swing.JPanel {
                 txtMaleActionPerformed(evt);
             }
         });
-        jPanel2.add(txtMale, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, -1, -1));
+        jPanel2.add(txtMale, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, -1, -1));
 
         btnCancel.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
         btnCancel.setText("ຍົກເລີກ");
@@ -247,6 +249,11 @@ public class PanelCustomer extends javax.swing.JPanel {
             }
         });
         jPanel2.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 200, -1, -1));
+        jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 260, 30));
+
+        jLabel8.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
+        jLabel8.setText("ນາມສະກຸນ");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -259,7 +266,9 @@ public class PanelCustomer extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTable1.setFont(new java.awt.Font("Phetsarath OT", 0, 13)); // NOI18N
@@ -304,7 +313,7 @@ public class PanelCustomer extends javax.swing.JPanel {
                 .addGap(9, 9, 9)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -344,12 +353,14 @@ public class PanelCustomer extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.ButtonGroup gender;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
