@@ -419,8 +419,25 @@ public class PanelCustomer extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
+    //Delete
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        // ຢືນຢັນການລືບ
+        int data = JOptionPane.showConfirmDialog(null, "ທ່ານຕ້ອງການລືບຂໍ້ມູນລາຍການນີ້ແທ້ ຫຼື ບໍ່?","ຢືນຢັນ", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (data != 0) {
+            clearForm();
+            return;
+        }
+        try {
+            String sql = "DELETE FROM customer WHERE cus_id=? ";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtId.getText());
+            pst.executeUpdate();
+            clearForm();
+          updateTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
