@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import mysqlConnect.MysqlConnect;
+import validation.Validation;
 
 public class PanelCustomer extends javax.swing.JPanel {
 
@@ -115,6 +116,28 @@ public class PanelCustomer extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+    
+    //ສ້າງເມັດທອດກວດສອບຟອມ
+    private boolean checkInputs() {
+        return txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty()
+                || gender.getSelection() == null || txtAddress.getText().isEmpty()
+                || txtTelephone.getText().isEmpty();
+    }
+    
+    //ສ້າງເມັດທອດລືບຄ່າຂໍ້ມູນໃນຟອມ
+    private void clearForm() {
+        autoId();
+        txtFirstname.setText("");
+        txtLastname.setText("");
+        gender.clearSelection();
+        txtAddress.setText("");
+        txtTelephone.setText("");
+        btnAdd.setEnabled(true);
+        btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
+
+        jTable1.clearSelection();
     }
     
     @SuppressWarnings("unchecked")
@@ -317,7 +340,8 @@ public class PanelCustomer extends javax.swing.JPanel {
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
     private void txtFemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFemaleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFemaleActionPerformed
@@ -328,10 +352,17 @@ public class PanelCustomer extends javax.swing.JPanel {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
+        clearForm();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        if(checkInputs()){
+            JOptionPane.showMessageDialog(null, "ກະລຸນນາປ້ອນໃຫ້ຄົບຖ້ວນດ້ວຍ", "ຫວ່າງເປົ່າ", JOptionPane.WARNING_MESSAGE);
+            return;
+        }else if (!Validation.telephoneValidation(txtTelephone.getText())){
+            JOptionPane.showMessageDialog(null, "ກະລຸນນາປ້ອນເບີໂທລະສັບໃຫ້ຖືກຕ້ອງດ້ວຍ", "ຫວ່າງເປົ່າ", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
